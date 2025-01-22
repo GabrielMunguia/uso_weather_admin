@@ -13,6 +13,7 @@ const Logo = ({ className, height = 100, width = 100 }: IProps) => {
         <Image
           src='/assets/img/logo.png'
           alt='logo'
+          style={{ objectFit: 'contain' }}
           className={className}
           fill
         />

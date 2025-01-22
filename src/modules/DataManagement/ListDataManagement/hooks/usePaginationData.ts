@@ -1,5 +1,5 @@
+import { IApiBasePaginateResponse } from '@/shared/interfaces/interfaces';
 import { useCallback, useEffect, useState } from 'react';
-import { IApiBasePaginateResponse } from '../interfaces/interfaces';
 
 interface IParams<T> {
   initialPage?: number;
@@ -26,32 +26,18 @@ export const usePaginationApi = <T>({
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
-
-  // Implementación de debounce de 1 segundo
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 1000); // 1000 ms = 1 segundo
-
-    // Limpiar el timeout si el search cambia antes de 1 segundo
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [search]);
 
   const getData = useCallback(async () => {
     setLoading(true);
-    const response = await callback({ page, limit, search: debouncedSearch });
+    const response = await callback({ page, limit, search });
     setData(response.result.data);
     setTotalPages(response.result.totalPages);
     setLoading(false);
-  }, [callback, limit, page, debouncedSearch]);
+  }, [callback, limit, page, search]);
 
   useEffect(() => {
     getData();
   }, [getData]);
-
   const reset = useCallback(
     ({
       newPage,

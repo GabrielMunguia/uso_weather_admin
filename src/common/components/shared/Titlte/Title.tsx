@@ -5,7 +5,7 @@ interface IProps {
 }
 const Title = ({ title }: IProps) => {
   return (
-    <div className='flex justify-center items-center mb-5'>
+    <div className='flex justify-center items-center mb-3'>
       <h1 className='my-3 text-xl lg:text-3xl font-semibold  hover:text-gray-700'>
         {title}
       </h1>

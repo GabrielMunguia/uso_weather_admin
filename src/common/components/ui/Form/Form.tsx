@@ -25,31 +25,29 @@ const Form = ({
 }: IProps) => {
   return (
     <FormProvider {...form}>
-      <div className='w-full'>
-        {title ? (
-          <h1 className='my-2 text-2xl font-semibold'>{title}</h1>
-        ) : null}
+      <Card
+        className={` w-full  p-2 rounded-lg shadow-lg border overflow-visible ${isLoading ? 'animate-pulse' : ''}`}
+      >
+        <div className='w-full'>
+          {title ? (
+            <h1 className='my-2 text-2xl font-semibold'>{title}</h1>
+          ) : null}
 
-        {breadcrumb.length > 0 && (
-          <div className='my-4'>
-            <Breadcrumbs>
-              {breadcrumb.map((b, index) => (
-                <BreadcrumbItem key={index}>
-                  <Link href={b.href}>{b.label}</Link>
-                </BreadcrumbItem>
-              ))}
-              <BreadcrumbItem>{currentTabName}</BreadcrumbItem>
-            </Breadcrumbs>
-          </div>
-        )}
-
-        <Card
-          className={` w-full  p-2 rounded-lg shadow-lg border overflow-visible ${isLoading ? 'animate-pulse' : ''}`}
-        >
-          {' '}
-          {children}
-        </Card>
-      </div>
+          {breadcrumb.length > 0 && (
+            <div className='my-4'>
+              <Breadcrumbs>
+                {breadcrumb.map((b, index) => (
+                  <BreadcrumbItem key={index}>
+                    <Link href={b.href}>{b.label}</Link>
+                  </BreadcrumbItem>
+                ))}
+                <BreadcrumbItem>{currentTabName}</BreadcrumbItem>
+              </Breadcrumbs>
+            </div>
+          )}
+        </div>
+        {children}
+      </Card>
     </FormProvider>
   );
 };

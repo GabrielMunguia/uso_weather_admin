@@ -1,5 +1,6 @@
-import { AiOutlineCloudUpload, AiOutlineCloud } from 'react-icons/ai';
-import { FaChartLine, FaTable, FaFileAlt } from 'react-icons/fa';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { FaChartLine, FaUsers } from 'react-icons/fa';
+import { JSX } from 'react';
 
 type JSXElement = () => JSX.Element;
 
@@ -29,7 +30,7 @@ export const sidebarRoutes: IRoutesSidebar[] = [
         name: 'Cargar Datos',
       },
       {
-        path: '/dashboard/view-data',
+        path: '/dashboard/list-data',
         name: 'Ver Datos Cargados',
       },
     ],
@@ -45,18 +46,16 @@ export const sidebarRoutes: IRoutesSidebar[] = [
     ],
   },
   {
-    name: 'Predicciones y Reportes',
-    icon: () => (
-      <AiOutlineCloud className='text-white' width={30} height={30} />
-    ),
+    name: 'Gestion de usuarios',
+    icon: () => <FaUsers className='text-white' width={30} height={30} />,
     routes: [
       {
-        path: '/dashboard/predictions',
-        name: 'Generar Predicciones',
+        path: '/dashboard/users',
+        name: 'Ver usuarios',
       },
       {
-        path: '/dashboard/reports',
-        name: 'Ver Reportes',
+        path: '/dashboard/users/form',
+        name: 'Agregar usuario',
       },
     ],
   },

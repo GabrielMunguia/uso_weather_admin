@@ -1,7 +1,8 @@
 export interface IUser {
-  id: number;
+  id: string;
   email: string;
   roles: string[];
+  token: string;
 }
 
 export interface IApibaseResponse<T> {
