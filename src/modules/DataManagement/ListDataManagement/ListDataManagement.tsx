@@ -19,8 +19,6 @@ import {
   TableRow,
 } from '@nextui-org/react';
 import Link from 'next/link';
-import { useCallback } from 'react';
-import { toast } from 'sonner';
 
 const ListDataManagement = () => {
   const {
@@ -33,21 +31,6 @@ const ListDataManagement = () => {
   } = usePaginationApi<IClimatePredictionModel>({
     callback: listTrainingModelData,
   });
-  const { ask } = useConfirm();
-
-  const handleStatus = useCallback(
-    async (id: string, status: boolean) => {
-      const confirm = await ask('Estas seguro');
-
-      if (confirm) {
-        // Agregar lógica para cambiar estado aquí
-        toast.success(
-          `Registro ${status ? 'desactivado' : 'activado'} correctamente.`,
-        );
-      }
-    },
-    [ask],
-  );
 
   return (
     <div>

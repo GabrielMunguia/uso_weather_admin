@@ -2,39 +2,39 @@
 import Form from '@/common/components/ui/Form/Form';
 import FormInput from '@/common/components/ui/Form/FormInput';
 import { Button } from '@nextui-org/react';
-import { signIn } from 'next-auth/react';
+
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginValidations } from './validations/login.validation';
 import Logo from '@/common/widget/logo/Logo';
+import { generateNewPassword } from '@/shared/services/users/users.service';
+
 interface IProps {
   onShowResetPassword: () => void;
 }
-const FormLogin = ({ onShowResetPassword }: IProps) => {
+const FormResetPassword = ({ onShowResetPassword }: IProps) => {
   const router = useRouter();
   const form = useForm({
     defaultValues: {
       email: '',
-      password: '',
     },
     resolver: zodResolver(loginValidations),
   });
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { email, password } = data;
-    const response = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
+    console.log('x');
+    const { email } = data;
+    const response = await generateNewPassword(email);
+    console.log({ response });
 
-    if (response?.ok) {
-      router.replace('/dashboard');
+    if (response.status == 'success') {
+      toast.success('Se envio una nueva contraseña al correo del usuario');
+      onShowResetPassword();
       return;
     }
-    toast.error('Invalid credentials');
+    toast.error('Ocurrio un error intenta mas tarde');
   });
 
   return (
@@ -42,24 +42,22 @@ const FormLogin = ({ onShowResetPassword }: IProps) => {
       <div className='max-w-full w-[30rem] p-3'>
         <Form form={form}>
           <Logo />
-          <p className='font-semibold'>Inicia sesión</p>
+          <p className='font-semibold'>Recuperar contraseña</p>
           <FormInput name='email' label='Email' />
-          <FormInput name='password' label='Password' type='password' />
+
           <Button
-            color='primary'
+            color='warning'
             className='w-full'
             onPress={() => handleSubmit()}
             isLoading={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting
-              ? 'Iniciando sesión'
-              : 'Iniciar sesión'}
+            Recuperar contraseña
           </Button>
           <p
-            className='my-3 font-semibold text-red-500 cursor-pointer  '
+            className='my-3 font-semibold  cursor-pointer  '
             onClick={() => onShowResetPassword()}
           >
-            Olvidades tu contraseña?
+            Iniciar sesion
           </p>
         </Form>
       </div>
@@ -67,4 +65,4 @@ const FormLogin = ({ onShowResetPassword }: IProps) => {
   );
 };
 
-export default FormLogin;
+export default FormResetPassword;

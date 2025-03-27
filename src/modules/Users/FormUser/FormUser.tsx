@@ -59,7 +59,7 @@ const FormUser = ({ userData }: IProps) => {
     if (!isConfirmed) return;
     const loading = toast.loading('Cargando...');
     try {
-      const response = await generateNewPassword(userData.id);
+      const response = await generateNewPassword(userData.username);
       if (response.status == 'success') {
         toast.dismiss(loading);
         toast.success('Se envio una nueva contraseña al correo del usuario');

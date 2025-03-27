@@ -12,6 +12,7 @@ import {
   IDeleteUserResponse,
   IGenerateNewPasswordResponse,
 } from './interfaces';
+import axios from 'axios';
 
 export const login = async (
   email: string,
@@ -22,9 +23,9 @@ export const login = async (
     username: email,
     password,
   };
-  const resp = await httpClient.post<ILoginResponse>(url, body);
+  const response = await axios.post<ILoginResponse>(url, body);
 
-  return resp;
+  return response.data;
 };
 
 export interface IGetPaginationUserReq {
@@ -76,9 +77,11 @@ export const deleteUser = async (
 };
 
 export const generateNewPassword = async (
-  userId: string,
+  email: string,
 ): Promise<IGenerateNewPasswordResponse> => {
-  const url = `${API_ENDPOINTS.GENERATE_NEW_PASSWORD}/${userId}/send-new-password`;
-  const resp = await httpClient.put<IGenerateNewPasswordResponse>(url, {});
+  const url = `${API_ENDPOINTS.GENERATE_NEW_PASSWORD}/send-new-password`;
+  const resp = await httpClient.put<IGenerateNewPasswordResponse>(url, {
+    email,
+  });
   return resp;
 };

@@ -1,5 +1,6 @@
 import httpClient from '@/shared/utils/HttpClient';
 import {
+  IDeleteTrainingModelDataResponse,
   IGetTrainingModelDataAPI,
   IGetTrainingModelDataReq,
   IGetTrainingModelDataResponse,
@@ -54,6 +55,16 @@ export const listTrainingModelData = async (
 export const trainModel = async (): Promise<IMakeTrainingModel> => {
   const response = await httpClient.get<IMakeTrainingModel>(
     API_ENDPOINTS.TRAINING_MODEL,
+  );
+  return response;
+};
+
+export const deleteTrainingModelData = async (
+  startDate: string,
+  endDate: string,
+): Promise<IDeleteTrainingModelDataResponse> => {
+  const response = await httpClient.delete<IDeleteTrainingModelDataResponse>(
+    `${API_ENDPOINTS.DELETE_DATA}?fecha_inicio=${startDate}&fecha_fin=${endDate}`,
   );
   return response;
 };

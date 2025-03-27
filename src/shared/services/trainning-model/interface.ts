@@ -69,3 +69,8 @@ export interface IGetTrainingModelDataAPI
   extends IApiBasePaginateResponse<IClimatePredictionModelAPI> {}
 export interface IGetTrainingModelDataResponse
   extends IApiBasePaginateResponse<IClimatePredictionModel> {}
+
+export interface IDeleteTrainingModelDataResponse {
+  status: string;
+  message: string;
+}

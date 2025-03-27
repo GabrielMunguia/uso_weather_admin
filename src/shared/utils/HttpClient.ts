@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
+import { getAuthHeaders } from '../actions/getAuthGeaders';
 
 class HttpClient {
-  public myHeaders: { [key: string]: string } = {};
-
   constructor() {
-    this.myHeaders = {};
+    this.init();
   }
+
+  private async init() {}
+
   async get<T>(url: string): Promise<T> {
     try {
       const response = await fetch(url, {
         method: 'GET',
+        headers: await getAuthHeaders(),
       });
       const result = await response.json();
       return result;
@@ -17,11 +21,15 @@ class HttpClient {
       return this.handleError<T>(error);
     }
   }
-  async post<T>(url: string, body: any, header: any = {}): Promise<T> {
+
+  async post<T>(url: string, body: any): Promise<T> {
     try {
-      const response = await axios.post(url, body, header);
-      const result = await response.data;
-      return result;
+      const response = await axios.post(url, body, {
+        headers: {
+          ...(await getAuthHeaders()),
+        },
+      });
+      return response.data;
     } catch (error) {
       return this.handleError<T>(error);
     }
@@ -32,10 +40,10 @@ class HttpClient {
       const response = await axios.post(url, body, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          ...(await getAuthHeaders()),
         },
       });
-      const result = await response.data;
-      return result;
+      return response.data;
     } catch (error) {
       return this.handleError<T>(error);
     }
@@ -46,10 +54,10 @@ class HttpClient {
       const response = await axios.patch(url, body, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          ...(await getAuthHeaders()),
         },
       });
-      const result = await response.data;
-      return result;
+      return response.data;
     } catch (error) {
       return this.handleError<T>(error);
     }
@@ -60,34 +68,45 @@ class HttpClient {
       const response = await axios.put(url, body, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          ...(await getAuthHeaders()),
         },
       });
-      const result = await response.data;
-      return result;
+      return response.data;
     } catch (error) {
       return this.handleError<T>(error);
     }
   }
+
   async put<T>(url: string, body: any): Promise<T> {
-    const response = await axios.put(url, body);
-    const result = await response.data;
-
-    return result;
+    try {
+      const response = await axios.put(url, body, {
+        headers: await getAuthHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return this.handleError<T>(error);
+    }
   }
+
   async patch<T>(url: string, body: any): Promise<T> {
-    const response = await axios.patch(url, body);
-    const result = await response.data;
-
-    return result;
+    try {
+      const response = await axios.patch(url, body, {
+        headers: await getAuthHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      return this.handleError<T>(error);
+    }
   }
+
   async delete<T>(url: string, payload?: any): Promise<T> {
     try {
-      if (!payload) {
-        payload = {};
-      }
-      const response = await axios.delete(url, { data: payload });
-      const result = await response.data;
-      return result;
+      const response = await axios.delete(url, {
+        data: payload,
+        headers: await getAuthHeaders(),
+      });
+      return response.data;
     } catch (error) {
       return this.handleError<T>(error);
     }
@@ -96,12 +115,9 @@ class HttpClient {
   private handleError<T>(error: any): T {
     if (axios.isAxiosError(error)) {
       const responseApi = error.response?.data;
-      if (responseApi) {
-        return responseApi;
-      }
-      return { error: 'Unknown error' } as unknown as T;
+      return (responseApi as T) || ({ error: 'Unknown error' } as T);
     }
-    return { error: 'Unknown error' } as unknown as T;
+    return { error: 'Unknown error' } as T;
   }
 }
 

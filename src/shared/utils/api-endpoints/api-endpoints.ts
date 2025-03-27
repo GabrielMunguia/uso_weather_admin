@@ -8,5 +8,6 @@ export const API_ENDPOINTS = {
   GET_USER: `${API_URL}/auth/users`,
   UPLOAD_TRAINING_csv: `${API_URL}/traning`,
   LIST_DATA_TRAINING_MODEL: `${API_URL}/traning/list`,
+  DELETE_DATA: `${API_URL}/traning/`,
   TRAINING_MODEL: `${API_URL}/traning/`,
 };

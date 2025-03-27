@@ -19,6 +19,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Missing credentials');
         const { email } = credentials;
         const response = await login(email, credentials.password);
+        console.log({ response });
 
         const { user: userData } = response;
 
